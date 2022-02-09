@@ -2,10 +2,8 @@ package gotestgen
 
 import (
 	"bytes"
-	"fmt"
 	"go/format"
 	"go/types"
-	"os"
 
 	"github.com/gostaticanalysis/analysisutil"
 	"github.com/gostaticanalysis/codegen"
@@ -15,11 +13,11 @@ import (
 const doc = "gotestgen is test template generate tool"
 
 var (
-	flagOutput string
+	flagIsParallel bool
 )
 
 func init() {
-	Generator.Flags.StringVar(&flagOutput, "o", "", "output file name")
+	Generator.Flags.BoolVar(&flagIsParallel, "p", false, "whether t.Parallel() or not")
 }
 
 var Generator = &codegen.Generator{
@@ -28,8 +26,12 @@ var Generator = &codegen.Generator{
 	Run:  run,
 }
 
+type ExecuteData struct {
+	TestTargets map[types.Object]string
+	IsParallel  bool
+}
+
 func run(pass *codegen.Pass) error {
-	ifaces := map[string]*knife.Interface{}
 	testTargets := map[types.Object]string{}
 
 	for key, val := range pass.TypesInfo.Defs {
@@ -51,12 +53,9 @@ func run(pass *codegen.Pass) error {
 				delete(testTargets, iface.Method(i))
 			}
 		}
-		if iface != nil {
-			ifaces[name] = knife.NewInterface(iface)
-		}
 	}
 
-	fmt.Println(testTargets)
+	ed := ExecuteData{TestTargets: testTargets, IsParallel: flagIsParallel}
 
 	td := &knife.TempalteData{
 		Fset:      pass.Fset,
@@ -70,7 +69,7 @@ func run(pass *codegen.Pass) error {
 	}
 
 	var buf bytes.Buffer
-	if err := t.Execute(&buf, ifaces); err != nil {
+	if err := t.Execute(&buf, ed); err != nil {
 		return err
 	}
 
@@ -79,19 +78,7 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
-	if flagOutput == "" {
-		pass.Print(string(src))
-		return nil
-	}
-
-	f, err := os.Create(flagOutput)
-	if err != nil {
-		return err
-	}
-
-	fmt.Fprint(f, string(src))
-
-	if err := f.Close(); err != nil {
+	if _, err := pass.Print(string(src)); err != nil {
 		return err
 	}
 
