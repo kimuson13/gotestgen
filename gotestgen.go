@@ -87,30 +87,26 @@ func run(pass *codegen.Pass) error {
 
 var tmpl = `
 package {{(pkg).Name}}_test
-{{range $tn, $t := .}}
-type Mock{{$tn}} struct {
-{{- range $n, $f := $t.Methods}}
-        {{$n}}Func {{$f.Signature}}
-{{- end}}
+{{range $tn, $funcName := .TestTargets}}
+func Test{{$funcName}}(t *tesitng.T) {
+	cases := map[string]struct{
+		// write arguments below this
+
+	}{
+		// write test cases below this 
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+			{{if $.IsParallel}}
+			t.Parallel()
+			{{end}}
+		})
+	}
 }
-{{range $n, $f := $t.Methods}}
-func (m *Mock{{$tn}}) {{$n}}({{range $f.Signature.Params}}
-	{{- if (and $f.Signature.Variadic (eq . (last $f.Signature.Params)))}}
-        	{{- .Name}} ...{{(slice .Type).Elem}},
-	{{- else}}
-        	{{- .Name}} {{.Type}},
-	{{- end}}
-{{- end}}) ({{range $f.Signature.Results}}
-        {{- .Name}} {{.Type}},
-{{- end}}) {
-        {{if $f.Signature.Results}}return {{end}}m.{{$n}}Func({{range $f.Signature.Params}}
-		{{- if (and $f.Signature.Variadic (eq . (last $f.Signature.Params)))}}
-        		{{- .Name}}...,
-		{{- else}}
-        		{{- .Name}},
-		{{- end}}
-        {{- end}})
-}
-{{end}}
 {{end}}
 `
