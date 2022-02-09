@@ -30,6 +30,14 @@ var Generator = &codegen.Generator{
 
 func run(pass *codegen.Pass) error {
 	ifaces := map[string]*knife.Interface{}
+	testTargets := map[types.Object]string{}
+
+	for key, val := range pass.TypesInfo.Defs {
+		switch val.(type) {
+		case *types.Func:
+			testTargets[val] = key.Name
+		}
+	}
 
 	s := pass.Pkg.Scope()
 	for _, name := range s.Names() {
@@ -38,10 +46,17 @@ func run(pass *codegen.Pass) error {
 			continue
 		}
 		iface, _ := analysisutil.Under(obj.Type()).(*types.Interface)
+		for i := 0; i < iface.NumMethods(); i++ {
+			if _, ok := testTargets[iface.Method(i)]; ok {
+				delete(testTargets, iface.Method(i))
+			}
+		}
 		if iface != nil {
 			ifaces[name] = knife.NewInterface(iface)
 		}
 	}
+
+	fmt.Println(testTargets)
 
 	td := &knife.TempalteData{
 		Fset:      pass.Fset,
