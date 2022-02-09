@@ -12,7 +12,7 @@ import (
 	"github.com/gostaticanalysis/knife"
 )
 
-const doc = "gotestgen is ..."
+const doc = "gotestgen is test template generate tool"
 
 var (
 	flagOutput string
