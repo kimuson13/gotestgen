@@ -18,3 +18,98 @@ func Testhoge(t *tesitng.T) {
 		})
 	}
 }
+
+func TestGet(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestInsert(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TesthelloWorld(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TesttwoVal(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestnameVal(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
