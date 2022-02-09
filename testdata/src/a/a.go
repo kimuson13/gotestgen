@@ -14,3 +14,7 @@ type Logger interface {
 	Infof(format string, args ...interface{})
 	Errorf(format string, args ...interface{})
 }
+
+func hoge(val int) int {
+	return 0
+}
