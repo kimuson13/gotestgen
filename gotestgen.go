@@ -6,6 +6,7 @@ import (
 	"go/format"
 	"go/types"
 	"os"
+	"path/filepath"
 	"strings"
 	"unicode"
 
@@ -22,7 +23,7 @@ var (
 )
 
 var flagDesc string = `
-["package name":"filepath" "other package":"filepath"]
+["package name":"filepath","other package":"filepath"]
 filepath accept only directory
 please see github.com/kimuson13/gotestgen to know more info.
 `
@@ -39,12 +40,58 @@ var Generator = &codegen.Generator{
 }
 
 type ExecuteData struct {
-	TestTargets map[types.Object]string
-	IsParallel  bool
+	ExistTestFile bool
+	TestTargets   map[types.Object]string
+	IsParallel    bool
+}
+
+func registerMap(generatePaths string) (map[string]string, error) {
+	genMap := make(map[string]string)
+
+	if generatePaths == "" {
+		return genMap, nil
+	}
+
+	trimPaths := strings.Trim(generatePaths, "[]")
+	paths := strings.Split(trimPaths, ",")
+	for _, path := range paths {
+		if cnt := strings.Count(path, ":"); cnt != 1 {
+			return genMap, fmt.Errorf("want [package name:filepath] but got: %s\n", path)
+		}
+
+		pp := strings.Split(path, ":")
+		if len(pp) != 2 {
+			return genMap, fmt.Errorf("want [package name:filepath] but got: %s\n", path)
+		}
+		pkgName := pp[0]
+		generatePath := strings.Trim(pp[1], " ")
+
+		generateAbsPath, err := filepath.Abs(generatePath)
+		if err != nil {
+			return genMap, fmt.Errorf("flag g value error: %w", err)
+		}
+
+		if f, err := os.Stat(generateAbsPath); os.IsNotExist(err) || !f.IsDir() {
+			return genMap, err
+		}
+
+		genMap[pkgName] = generateAbsPath
+	}
+
+	return genMap, nil
 }
 
 func run(pass *codegen.Pass) error {
 	testTargets := make(map[types.Object]string)
+	genMap := make(map[string]string)
+	if flagGenerateFilePaths != "" {
+		mp, err := registerMap(flagGenerateFilePaths)
+		if err != nil {
+			return err
+		}
+
+		genMap = mp
+	}
 
 	for key, val := range pass.TypesInfo.Defs {
 		switch val.(type) {
@@ -85,6 +132,7 @@ func run(pass *codegen.Pass) error {
 	}
 
 	ed := ExecuteData{TestTargets: testTargets, IsParallel: flagIsParallel}
+	path := filepath.Join(genMap[fileName], fmt.Sprintf("%s_test.go", fileName))
 
 	td := &knife.TempalteData{
 		Fset:      pass.Fset,
@@ -107,7 +155,7 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
-	f, err := os.OpenFile(fmt.Sprintf("%s_test.go", fileName), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		return err
 	}
