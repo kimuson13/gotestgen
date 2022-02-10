@@ -183,18 +183,14 @@ import "testing"
 {{range $tn, $funcName := .TestTargets}}
 func Test{{$funcName}}(t *tesitng.T) {
 	cases := map[string]struct{
-		// write arguments below this
 
 	}{
-		// write test cases below this 
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 			{{if $.IsParallel}}
 			t.Parallel()
 			{{end}}
