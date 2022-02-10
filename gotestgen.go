@@ -153,10 +153,6 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
-	if _, err := pass.Print(string(src)); err != nil {
-		return err
-	}
-
 	return nil
 }
 
