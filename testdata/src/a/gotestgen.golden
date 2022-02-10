@@ -1,6 +1,6 @@
 package a_test
 
-func Testhoge(t *tesitng.T) {
+func TestHoge(t *tesitng.T) {
 	cases := map[string]struct {
 		// write arguments below this
 
@@ -57,7 +57,7 @@ func TestInsert(t *tesitng.T) {
 	}
 }
 
-func TesthelloWorld(t *tesitng.T) {
+func TestHelloWorld(t *tesitng.T) {
 	cases := map[string]struct {
 		// write arguments below this
 
@@ -76,7 +76,7 @@ func TesthelloWorld(t *tesitng.T) {
 	}
 }
 
-func TesttwoVal(t *tesitng.T) {
+func TestTwoVal(t *tesitng.T) {
 	cases := map[string]struct {
 		// write arguments below this
 
@@ -95,7 +95,7 @@ func TesttwoVal(t *tesitng.T) {
 	}
 }
 
-func TestnameVal(t *tesitng.T) {
+func TestNameVal(t *tesitng.T) {
 	cases := map[string]struct {
 		// write arguments below this
 

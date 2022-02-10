@@ -9,6 +9,10 @@ func hoge(val int) int {
 	return 0
 }
 
+func Hoge(val int) int {
+	return 0
+}
+
 type DB interface {
 	Get(id string) int
 	Insert(val string) error
@@ -26,14 +30,14 @@ func (db) Insert(val string) error {
 	return nil
 }
 
-func helloWorld() {
+func HelloWorld() {
 	fmt.Println("hello world")
 }
 
-func twoVal() (int, int) {
+func TwoVal() (int, int) {
 	return 0, 0
 }
 
-func nameVal() (result int) {
+func NameVal() (result int) {
 	return
 }
