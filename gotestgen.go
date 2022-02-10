@@ -6,7 +6,6 @@ import (
 	"go/format"
 	"go/types"
 	"os"
-	"path/filepath"
 	"strings"
 	"unicode"
 
@@ -42,42 +41,6 @@ var Generator = &codegen.Generator{
 type ExecuteData struct {
 	TestTargets map[types.Object]string
 	IsParallel  bool
-}
-
-func registerMap(generatePaths string) (map[string]string, error) {
-	genMap := make(map[string]string)
-
-	if generatePaths == "" {
-		return genMap, nil
-	}
-
-	trimPaths := strings.Trim(generatePaths, "[]")
-	paths := strings.Split(trimPaths, " ")
-	for _, path := range paths {
-		if cnt := strings.Count(path, ":"); cnt != 1 {
-			return genMap, fmt.Errorf("want [package name:filepath] but got: %s\n", path)
-		}
-
-		pp := strings.Split(path, ":")
-		if len(pp) != 2 {
-			return genMap, fmt.Errorf("want [package name:filepath] but got: %s\n", path)
-		}
-		pkgName := pp[0]
-		generatePath := strings.Trim(pp[1], " ")
-
-		generateAbsPath, err := filepath.Abs(generatePath)
-		if err != nil {
-			return genMap, fmt.Errorf("flag g value error: %w", err)
-		}
-
-		if f, err := os.Stat(generateAbsPath); os.IsNotExist(err) || !f.IsDir() {
-			return genMap, err
-		}
-
-		genMap[pkgName] = generateAbsPath
-	}
-
-	return genMap, nil
 }
 
 func run(pass *codegen.Pass) error {
