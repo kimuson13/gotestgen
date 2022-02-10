@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"go/format"
 	"go/types"
+	"unicode"
 
 	"github.com/gostaticanalysis/analysisutil"
 	"github.com/gostaticanalysis/codegen"
@@ -37,7 +38,9 @@ func run(pass *codegen.Pass) error {
 	for key, val := range pass.TypesInfo.Defs {
 		switch val.(type) {
 		case *types.Func:
-			testTargets[val] = key.Name
+			if r := rune(key.Name[0]); unicode.IsUpper(r) {
+				testTargets[val] = key.Name
+			}
 		}
 	}
 
@@ -47,7 +50,10 @@ func run(pass *codegen.Pass) error {
 		if !obj.Exported() {
 			continue
 		}
-		iface, _ := analysisutil.Under(obj.Type()).(*types.Interface)
+		iface, ok := analysisutil.Under(obj.Type()).(*types.Interface)
+		if !ok {
+			continue
+		}
 		for i := 0; i < iface.NumMethods(); i++ {
 			if _, ok := testTargets[iface.Method(i)]; ok {
 				delete(testTargets, iface.Method(i))

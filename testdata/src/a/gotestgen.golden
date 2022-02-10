@@ -1,6 +1,101 @@
 package a_test
 
-func Testhoge(t *tesitng.T) {
+func TestHoge(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestGet(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestInsert(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestHelloWorld(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestTwoVal(t *tesitng.T) {
+	cases := map[string]struct {
+		// write arguments below this
+
+	}{
+		// write test cases below this
+		// test case name: {args}
+
+	}
+
+	for testName, tt := range cases {
+		tt := tt
+		t.Run(testName, func(t *testing.T) {
+			// write tests below this
+
+		})
+	}
+}
+
+func TestNameVal(t *tesitng.T) {
 	cases := map[string]struct {
 		// write arguments below this
 
