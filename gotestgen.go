@@ -176,6 +176,9 @@ var tmpl = `
 {{- if .ExistTestFile -}}
 {{- else -}}
 package {{(pkg).Name}}_test
+
+import "testing"
+
 {{- end -}}
 {{range $tn, $funcName := .TestTargets}}
 func Test{{$funcName}}(t *tesitng.T) {
