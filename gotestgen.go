@@ -167,7 +167,8 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
-	pass.Print(string(src))
+	//for test
+	// pass.Print(string(src))
 
 	return nil
 }
