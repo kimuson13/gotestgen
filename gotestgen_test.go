@@ -2,6 +2,7 @@ package gotestgen_test
 
 import (
 	"flag"
+	"log"
 	"os"
 	"testing"
 
@@ -14,7 +15,15 @@ var flagUpdate bool
 func TestMain(m *testing.M) {
 	flag.BoolVar(&flagUpdate, "update", false, "update the golden files")
 	flag.Parse()
-	os.Exit(m.Run())
+	os.Exit(removeAndExit(m.Run()))
+}
+
+func removeAndExit(code int) int {
+	if err := os.Remove("a_test.go"); err != nil {
+		log.Println("failed to remove file: ", err)
+	}
+
+	return code
 }
 
 func TestGenerator(t *testing.T) {

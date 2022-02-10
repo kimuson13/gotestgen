@@ -2,8 +2,11 @@ package gotestgen
 
 import (
 	"bytes"
+	"fmt"
 	"go/format"
 	"go/types"
+	"os"
+	"strings"
 	"unicode"
 
 	"github.com/gostaticanalysis/analysisutil"
@@ -14,11 +17,19 @@ import (
 const doc = "gotestgen is test template generate tool"
 
 var (
-	flagIsParallel bool
+	flagIsParallel        bool
+	flagGenerateFilePaths string
 )
+
+var flagDesc string = `
+["package name":"filepath" "other package":"filepath"]
+filepath accept only directory
+please see github.com/kimuson13/gotestgen to know more info.
+`
 
 func init() {
 	Generator.Flags.BoolVar(&flagIsParallel, "p", false, "whether t.Parallel() or not")
+	Generator.Flags.StringVar(&flagGenerateFilePaths, "g", "", flagDesc)
 }
 
 var Generator = &codegen.Generator{
@@ -33,7 +44,7 @@ type ExecuteData struct {
 }
 
 func run(pass *codegen.Pass) error {
-	testTargets := map[types.Object]string{}
+	testTargets := make(map[types.Object]string)
 
 	for key, val := range pass.TypesInfo.Defs {
 		switch val.(type) {
@@ -42,6 +53,18 @@ func run(pass *codegen.Pass) error {
 				testTargets[val] = key.Name
 			}
 		}
+	}
+
+	var fileName string
+	for _, v := range pass.Files {
+		pkgName := v.Name.Name
+		if pkgName == "main" {
+			return nil
+		} else if strings.HasSuffix(pkgName, "_test") {
+			return nil
+		}
+
+		fileName = pkgName
 	}
 
 	s := pass.Pkg.Scope()
@@ -84,7 +107,12 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
-	if _, err := pass.Print(string(src)); err != nil {
+	f, err := os.OpenFile(fmt.Sprintf("%s_test.go", fileName), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		return err
+	}
+
+	if _, err := fmt.Fprint(f, string(src)); err != nil {
 		return err
 	}
 
