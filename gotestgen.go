@@ -133,6 +133,9 @@ func run(pass *codegen.Pass) error {
 
 	ed := ExecuteData{TestTargets: testTargets, IsParallel: flagIsParallel}
 	path := filepath.Join(genMap[fileName], fmt.Sprintf("%s_test.go", fileName))
+	if _, err := os.Stat(path); err == nil {
+		ed.ExistTestFile = true
+	}
 
 	td := &knife.TempalteData{
 		Fset:      pass.Fset,
@@ -164,31 +167,35 @@ func run(pass *codegen.Pass) error {
 		return err
 	}
 
+	//for test
+	// pass.Print(string(src))
+
 	return nil
 }
 
 var tmpl = `
+{{- if .ExistTestFile -}}
+{{- else -}}
 package {{(pkg).Name}}_test
+
+import "testing"
+
+{{- end -}}
 {{range $tn, $funcName := .TestTargets}}
 func Test{{$funcName}}(t *tesitng.T) {
 	cases := map[string]struct{
-		// write arguments below this
 
 	}{
-		// write test cases below this 
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 			{{if $.IsParallel}}
 			t.Parallel()
 			{{end}}
 		})
 	}
 }
-{{end}}
-`
+{{end}}`

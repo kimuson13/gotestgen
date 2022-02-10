@@ -1,19 +1,16 @@
 package a_test
 
+import "testing"
+
 func TestHoge(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
@@ -21,18 +18,13 @@ func TestHoge(t *tesitng.T) {
 
 func TestGet(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
@@ -40,18 +32,13 @@ func TestGet(t *tesitng.T) {
 
 func TestInsert(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
@@ -59,18 +46,13 @@ func TestInsert(t *tesitng.T) {
 
 func TestHelloWorld(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
@@ -78,18 +60,13 @@ func TestHelloWorld(t *tesitng.T) {
 
 func TestTwoVal(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
@@ -97,18 +74,13 @@ func TestTwoVal(t *tesitng.T) {
 
 func TestNameVal(t *tesitng.T) {
 	cases := map[string]struct {
-		// write arguments below this
-
 	}{
-		// write test cases below this
-		// test case name: {args}
-
+		//write test cases below
 	}
 
 	for testName, tt := range cases {
 		tt := tt
 		t.Run(testName, func(t *testing.T) {
-			// write tests below this
 
 		})
 	}
