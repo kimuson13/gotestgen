@@ -182,7 +182,7 @@ import "testing"
 
 {{- end -}}
 {{range $tn, $funcName := .TestTargets}}
-func Test{{$funcName}}(t *tesitng.T) {
+func Test{{$funcName}}(t *testing.T) {
 	cases := map[string]struct{
 
 	}{
